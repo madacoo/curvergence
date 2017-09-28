@@ -4,6 +4,8 @@ const HEIGHT = 600;
 let lines = [];
 let pointA = randomPoint();
 let pointB = randomPoint();
+let holdingA = false;
+let holdingB = false;
 
 
 function clear() {
@@ -96,16 +98,22 @@ function getMousePos(e) {
 }
 
 function mousePressed(e) {
-
+	let mousePos = getMousePos(e);
+	if (mousePos.distance(pointA) < 20) {
+		holdingA = true;
+	} else if (mousePos.distance(pointB) < 20) {
+		holdingB = true;
+	}
 }
 
 
 function mouseReleased(e) {
-
+	holdingA = holdingB = false;
 }
 
 function mouseMoved(e) {
-
+	if (holdingA) pointA = getMousePos(e);
+	if (holdingB) pointB = getMousePos(e);
 }
 
 
@@ -116,5 +124,5 @@ function mouseMoved(e) {
 
 window.onload = function() {
     setup();
-    setInterval(draw, 1000/15);
+    setInterval(draw, 1000/30);
 };
