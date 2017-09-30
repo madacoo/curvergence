@@ -1,56 +1,46 @@
 
+const FPS = 30;
+
 window.onload = function() {
     setup();
-    //setInterval(draw, 1000/60);
+    setInterval(draw, FPS);
 };
 
 
 function setup() {
-    getCanvas("canvas");
+    prepareCanvas("canvas");
     addMouseListeners();
-    addOrigin("blue");
-    addOrigin("red");
+    palette = new Palette();
+    cm = new CurvergenceMachine();
+    cm.setBackground(palette.getColor());
+    cm.addOrigin(randomPoint(canvas.width, canvas.height), palette.getColor());
+    cm.addOrigin(randomPoint(canvas.width, canvas.height), palette.getColor());
+
+}
+
+function draw() {
+	cm.render();
+	cm.update();
+
 }
 
 
-function getCanvas(id) {
+function prepareCanvas(id) {
     window.canvas = document.getElementById(id);
     window.context = canvas.getContext("2d");
-    window.onresize();
+    window.onresize = function() {
+		canvas.height = window.innerHeight*0.8;
+		canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
+	};
+	window.onresize();
 }
 
 
-window.onresize = function() {
-    canvas.height = window.innerHeight*0.8;
-    canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
-};
+/* Drawing */
 
-
-
-
-
-
-
-
-
-let origins = [];
-let theta = 0;
-let colors = ["#6CA398", "#221858", "#2C4880"];
-let bgColor = "#2C4770";
-let curvergence = false;
-let placepoints = true;
-
-
-
-function background(color) {
-    context.fillStyle = color;
-    context.fillRect(0, 0, width, height);
-}
-
-
-function circle(x, y, r) {
+function drawCircle(pos, r) {
     context.beginPath();
-    context.arc(x, y, r, 0, 2*Math.PI);
+    context.arc(pos.x, pos.y, r, 0, 2*Math.PI);
     context.stroke();
     context.closePath();
     context.fill();
@@ -58,25 +48,12 @@ function circle(x, y, r) {
 }
 
 
-
-function curverge(theta) {
-    /* draw lines at angle theta and -theta from each of the origins */
-    for (let i in origins) {
-        drawLine(origins[i].pos, theta, color);
-        drawLine(origins[i].pos, -theta, color);
-    }
-}
-
-function drawLine(p, theta, color) {
-    /* Takes a Vector describing point p, a radian angle theta, and a color
+function drawLine(p, theta) {
+    /* Takes a Vector describing point p, a radian angle theta, and
      * draws a line to the canvas. */
     let q = pointAtAngle(p, theta);
-    context.strokeStyle = color || "#000000";
     new Line(p, q).render();
 }
-
-
-/* ---------- */
 
 function pointAtAngle(p, theta, d) {
     /* Takes a Vector p describing a point and a radian angle theta,
@@ -97,27 +74,12 @@ function randomPoint(width, height) {
     return new Vector(x, y);
 }
 
-function beginCurvergence() {
-    background(bgColor);
-    curvergence = true;
-    placepoints = false;
-}
-
-
-function endCurvergence() {
-    theta = 0;
-    curvergence = false;
-}
-
-
-function clearCurvergence() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    curvergence = false;
-    placepoints = true;
-}
 
 
 
+/* INPUTS */
+
+// Mouse
 
 function addMouseListeners() {
     document.addEventListener('mousedown', mousePressed);
@@ -135,52 +97,69 @@ function getMousePos(e) {
     return new Vector(x, y);
 }
 
+
 function mousePressed(e) {
+	if (cm.state != "preparing") return;
 	let mousePos = getMousePos(e);
-    for (let i in origins) {
-        if (mousePos.distance(origins[i].pos) < 20) {
-            origins[i].holding = true;
-            break;
-        }
-    }
+	for (let i in cm.origins) {
+		if (mousePos.distance(cm.origins[i].pos) < 20) {
+			cm.origins[i].state = "placing";
+			return;
+		}
+	}
 }
 
 
 function mouseReleased(e) {
-    for (let i in origins) {
-        origins[i].holding = false;
-    }
+	if (cm.state != "preparing") return;
+	for (let i in cm.origins) {
+		cm.origins[i].state = "placed";
+	}
 }
+
 
 function mouseMoved(e) {
-    for (let i in origins) {
-        if (!origins[i].holding) continue;
-        origins[i].pos = getMousePos(e);
-        break;
-    }
+	if (cm.state != "preparing") return;
+	for (let i in cm.origins) {
+		if (cm.origins[i].state == "placing") {
+			cm.origins[i].pos = getMousePos(e);
+			return;
+		}
+	}
+
 }
 
 
-function draw() {
-    if (curvergence) {
-        theta += (Math.PI*2)/(360*4);
-        curverge(theta);
-    } else if (placepoints) {
-        background(bgColor);
-        for (let i in origins) {
-            context.fillStyle = origins[i].color;
-            circle(origins[i].pos.x, origins[i].pos.y, 5)
-        }
-    }
+// Buttons
+
+function btnCurverge() {
+	cm.curverge();
 }
 
-function addOrigin(color) {
-    origins.push({ pos:     randomPoint(),
-                   holding: false,
-                   color:   color });
+
+function btnAddOrigin() {
+	let pos = randomPoint(canvas.width, canvas.height);
+	let col = palette.getColor();
+	cm.addOrigin(pos, col);
 }
 
-function removeOrigin() {
-    origins.pop();
+
+function btnRemOrigin() {
+	cm.remOrigin();
 }
+
+function btnClear() {
+	cm.clear();
+}
+
+function btnBackground() {
+	let col = palette.getColor();
+	
+	
+	cm.setBackground(col);
+}
+
+
+
+
 
