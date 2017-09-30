@@ -9,10 +9,10 @@ Line.prototype.render = function() {
 
     if (!f) { // vertical line
         posA = new Vector(this.a.x, 0);
-        posB = new Vector(this.a.x, HEIGHT);
+        posB = new Vector(this.a.x, height);
     } else {
         posA = new Vector(0, f(0));
-        posB = new Vector(WIDTH, f(WIDTH));
+        posB = new Vector(width, f(width));
     }
 
     context.beginPath();
