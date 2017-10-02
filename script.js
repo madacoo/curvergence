@@ -1,5 +1,6 @@
 
 const FPS = 30;
+urlSearchParams = new URLSearchParams(window.location.search);
 
 window.onload = function() {
     setup();
@@ -8,7 +9,13 @@ window.onload = function() {
 
 
 function setup() {
-    prepareCanvas("canvas");
+    let width, height;
+    if (urlSearchParams.has("width") && urlSearchParams.has("height")) {
+        width = parseInt(urlSearchParams.get("width"));
+        height = parseInt(urlSearchParams.get("height"));
+    }
+    console.log(width, height);
+    prepareCanvas("canvas", width, height);
     addMouseListeners();
     palette = new Palette();
     cm = new CurvergenceMachine();
@@ -25,15 +32,26 @@ function draw() {
 }
 
 
-function prepareCanvas(id) {
+function prepareCanvas(id, width, height) {
     window.canvas = document.getElementById(id);
     window.context = canvas.getContext("2d");
-    window.onresize = function() {
-		canvas.height = window.innerHeight*0.8;
-		canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
-        document.getElementsByTagName("body")[0].style.maxWidth = canvas.width.toString() + "px";
-	};
-	window.onresize();
+
+    if (width && height) {
+        canvas.width = width;
+        canvas.height = height;
+
+    } else {
+
+
+        window.onresize = function() {
+            canvas.height = window.innerHeight*0.8;
+            canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
+        };
+        window.onresize();
+
+    }
+
+    document.getElementsByTagName("body")[0].style.maxWidth = canvas.width.toString() + "px";
 }
 
 
