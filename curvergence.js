@@ -17,7 +17,7 @@ function CurvergenceMachine() {
 CurvergenceMachine.prototype.update = function() {
 	switch (this.state) {
 		case "preparing":
-			
+
 			break;
 		case "starting":
 			this.state = "drawing";
@@ -27,13 +27,14 @@ CurvergenceMachine.prototype.update = function() {
 			if (this.theta > Math.PI/2) {
 				this.theta = 0;
 				this.state = "done";
+                document.getElementById("btnReload").style.display = "inline-block";
 			}
             break;
 		case "done":
-		
+
 			break;
 	}
-	
+
 };
 
 CurvergenceMachine.prototype.render = function() {
@@ -42,11 +43,11 @@ CurvergenceMachine.prototype.render = function() {
 			this.drawBackground();
 			this.drawOrigins();
 			break;
-            
+
 		case "starting":
 			this.drawBackground();
 			break;
-            
+
 		case "drawing":
 			for (let i in this.origins) {
 				let p = this.origins[i].pos;
@@ -56,9 +57,9 @@ CurvergenceMachine.prototype.render = function() {
 				drawLine(p, -theta);
 			}
 			break;
-            
+
 		case "done":
-		
+
 			break;
 	}
 };
@@ -101,14 +102,17 @@ CurvergenceMachine.prototype.curverge = function() {
     switch (this.state) {
         case "preparing":
             if (this.origins.length > 0) this.state = "starting";
-            break;
+            return true;
     }
+    return false;
 };
 
 
-CurvergenceMachine.prototype.clear = function() {
+CurvergenceMachine.prototype.reload = function() {
     this.theta = 0;
     this.state = "preparing";
+    document.getElementById("btnCurverge").display = "inline-block";
+    return true;
 };
 
 

@@ -31,6 +31,7 @@ function prepareCanvas(id) {
     window.onresize = function() {
 		canvas.height = window.innerHeight*0.8;
 		canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
+        document.getElementsByTagName("body")[0].style.maxWidth = canvas.width.toString() + "px";
 	};
 	window.onresize();
 }
@@ -133,32 +134,19 @@ function mouseMoved(e) {
 // Buttons
 
 function btnCurverge() {
-	cm.curverge();
+	let started = cm.curverge();
+    if (started) {
+        document.getElementById("btnCurverge").style.display = "none";
+    }
 }
 
-
-function btnAddOrigin() {
-	let pos = randomPoint(canvas.width, canvas.height);
-	let col = palette.getColor();
-	cm.addOrigin(pos, col);
+function btnReload() {
+	let reloaded = cm.reload();
+    if (reloaded) {
+        document.getElementById("btnCurverge").style.display = "inline-block";
+        document.getElementById("btnReload").style.display = "none";
+    }
 }
-
-
-function btnRemOrigin() {
-	cm.remOrigin();
-}
-
-function btnClear() {
-	cm.clear();
-}
-
-function btnBackground() {
-	let col = palette.getColor();
-	
-	
-	cm.setBackground(col);
-}
-
 
 
 
