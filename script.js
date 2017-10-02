@@ -14,7 +14,6 @@ function setup() {
         width = parseInt(urlSearchParams.get("width"));
         height = parseInt(urlSearchParams.get("height"));
     }
-    console.log(width, height);
     prepareCanvas("canvas", width, height);
     addMouseListeners();
     palette = new Palette();
@@ -24,6 +23,7 @@ function setup() {
     cm.addOrigin(randomPoint(canvas.width, canvas.height), palette.getColor());
 
 }
+
 
 function draw() {
 	cm.render();
@@ -36,20 +36,11 @@ function prepareCanvas(id, width, height) {
     window.canvas = document.getElementById(id);
     window.context = canvas.getContext("2d");
 
-    if (width && height) {
-        canvas.width = width;
-        canvas.height = height;
+    height = height || window.innerHeight*0.8;
+    width = width || Math.min(window.innerWidth*0.95, height);
 
-    } else {
-
-
-        window.onresize = function() {
-            canvas.height = window.innerHeight*0.8;
-            canvas.width = Math.min(window.innerWidth*0.95, canvas.height);
-        };
-        window.onresize();
-
-    }
+    canvas.width = width;
+    canvas.height = height;
 
     document.getElementsByTagName("body")[0].style.maxWidth = canvas.width.toString() + "px";
 }

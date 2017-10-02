@@ -68,7 +68,7 @@ CurvergenceMachine.prototype.render = function() {
 
 CurvergenceMachine.prototype.drawOrigins = function() {
 	for (let i in this.origins) {
-        context.strokeStyle = this.origins[i].color;
+        context.strokeStyle = "#000000";
         context.fillStyle = this.origins[i].color;
 		drawCircle(this.origins[i].pos, this.originSize);
 	}
