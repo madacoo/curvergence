@@ -12,6 +12,7 @@ function CurvergenceMachine() {
 	this.background = "#000000";
 	this.theta = 0;
 	this.thetaIncrement = (Math.PI*2)/(360*2);
+    this.originSize = 15;
 }
 
 CurvergenceMachine.prototype.update = function() {
@@ -69,7 +70,7 @@ CurvergenceMachine.prototype.drawOrigins = function() {
 	for (let i in this.origins) {
         context.strokeStyle = this.origins[i].color;
         context.fillStyle = this.origins[i].color;
-		drawCircle(this.origins[i].pos, 5);
+		drawCircle(this.origins[i].pos, this.originSize);
 	}
 };
 
@@ -101,8 +102,13 @@ CurvergenceMachine.prototype.setBackground = function(color) {
 CurvergenceMachine.prototype.curverge = function() {
     switch (this.state) {
         case "preparing":
-            if (this.origins.length > 0) this.state = "starting";
-            return true;
+            if (this.origins.length > 0) {
+                this.state = "starting";
+                return true;
+            } else {
+                alert("Please add at least one origin by clicking anywhere on the canvas.");
+            }
+            break;
     }
     return false;
 };

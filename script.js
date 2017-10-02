@@ -83,9 +83,7 @@ function randomPoint(width, height) {
 // Mouse
 
 function addMouseListeners() {
-    document.addEventListener('mousedown', mousePressed);
     document.addEventListener('mouseup', mouseReleased);
-    document.addEventListener('mousemove', mouseMoved);
 }
 
 
@@ -95,41 +93,24 @@ function getMousePos(e) {
     let scaleY = canvas.height/rect.height;
     let x = (e.clientX - rect.left) * scaleX;
     let y = (e.clientY - rect.top) * scaleY;
+    if (x < 0 || y < 0 ||
+        x > canvas.width || y > canvas.height) return false;
     return new Vector(x, y);
-}
-
-
-function mousePressed(e) {
-	if (cm.state != "preparing") return;
-	let mousePos = getMousePos(e);
-	for (let i in cm.origins) {
-		if (mousePos.distance(cm.origins[i].pos) < 20) {
-			cm.origins[i].state = "placing";
-			return;
-		}
-	}
 }
 
 
 function mouseReleased(e) {
 	if (cm.state != "preparing") return;
+	let mousePos = getMousePos(e);
+    if (!mousePos) return;
 	for (let i in cm.origins) {
-		cm.origins[i].state = "placed";
+		if (mousePos.distance(cm.origins[i].pos) < cm.originSize) {
+			cm.origins.splice(i, 1);
+            return;
+        }
 	}
+    cm.addOrigin(mousePos,  palette.getColor());
 }
-
-
-function mouseMoved(e) {
-	if (cm.state != "preparing") return;
-	for (let i in cm.origins) {
-		if (cm.origins[i].state == "placing") {
-			cm.origins[i].pos = getMousePos(e);
-			return;
-		}
-	}
-
-}
-
 
 // Buttons
 
