@@ -6,11 +6,39 @@ body {
     font-family: sans-serif;
 }
 
-h1 {
-    text-align: left;
+#header {
+    display: inline-block;
+    width: 100%;
+}
+
+
+h1, h2 {
+    width: 49%;
     margin: 0;
     padding: 0;
     padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+h1 {
+    text-align: left;
+}
+
+h2 {
+    text-align: right;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+a, a:visited, a:active {
+    color: black;
+}
+
+a:hover {
+    color: purple;
 }
 
 canvas {
@@ -19,13 +47,12 @@ canvas {
     border-color: black;
 }
 
-div {
-    display: inline-block;
-    padding: 0.2rem;
-}
-
 img {
     max-width: 50px;
+}
+
+.button {
+    padding: 0.4rem;
 }
 
 #btnReload {
