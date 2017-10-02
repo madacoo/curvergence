@@ -104,7 +104,7 @@ function mouseReleased(e) {
 	let mousePos = getMousePos(e);
     if (!mousePos) return;
 	for (let i in cm.origins) {
-		if (mousePos.distance(cm.origins[i].pos) < cm.originSize) {
+		if (mousePos.distance(cm.origins[i].pos) < cm.originSize*2) {
 			cm.origins.splice(i, 1);
             return;
         }
