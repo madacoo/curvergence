@@ -13,7 +13,7 @@ Note: It is also possible to pass 'width' and 'height' parameters via a GET requ
 
 ## Installation
 
-Curvergence is written in vanilla javascript. It can either be run directly [here](madacoo.github.io/curvergence) or the repository can be cloned/downloaded and index.html opened in a browser.
+Curvergence is written in vanilla javascript. It can either be run directly [here](https://madacoo.github.io/curvergence/) or the repository can be cloned/downloaded and index.html opened in a browser.
 
 ## Examples
 
