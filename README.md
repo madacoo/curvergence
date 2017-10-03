@@ -1,8 +1,8 @@
-# curvergence
+# Curvergence
 
 > It's interesting how curves can emerge from straight lines.
 
-## usage
+## Usage
 
 - tap/click on the canvas to add and remove origin points
 - press play to start the animation
@@ -11,11 +11,11 @@
 
 Note: It is also possible to pass 'width' and 'height' parameters via a GET request in order to specify the size of the canvas. Useful for making backgrounds for desktop or mobile.
 
-## installation
+## Installation
 
 Curvergence is written in vanilla javascript. It can either be run directly [here](madacoo.github.io/curvergence) or the repository can be cloned/downloaded and index.html opened in a browser.
 
-## examples
+## Examples
 
 ![](ex1.png)
 
@@ -27,7 +27,7 @@ Curvergence is written in vanilla javascript. It can either be run directly [her
 
 ![](ex3.png)
 
-## license
+## License
 
 [GPL v3](LICENSE)
 
