@@ -1,6 +1,6 @@
 # Curvergence
 
-> It's interesting how curves can emerge from straight lines.
+> It's pretty cool how curves can emerge from straight lines.
 
 ## Usage
 
