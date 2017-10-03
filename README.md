@@ -17,15 +17,15 @@ Curvergence is written in vanilla javascript. It can either be run directly [her
 
 ## Examples
 
-![](ex1.png)
+![](examples/example1.png)
 
 ---
 
-![](ex2.png)
+![](examples/example2.png)
 
 ---
 
-![](ex3.png)
+![](examples/example3.png)
 
 ## License
 
